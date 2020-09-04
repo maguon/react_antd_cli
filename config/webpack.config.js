@@ -40,7 +40,7 @@ const isExtendingEslintConfig = process.env.EXTEND_ESLINT === 'true';
 const imageInlineSizeLimit = parseInt(
   process.env.IMAGE_INLINE_SIZE_LIMIT || '10000'
 );
-
+console.log('webpack init')
 // Check if TypeScript is setup
 const useTypeScript = fs.existsSync(paths.appTsConfig);
 
@@ -127,6 +127,7 @@ module.exports = function(webpackEnv) {
     }
     return loaders;
   };
+
     const entry = {}
     paths.indexJsList.forEach(e => {
         entry[e.name] = [
@@ -135,6 +136,7 @@ module.exports = function(webpackEnv) {
             e.path
         ].filter(Boolean)
     });
+
     const htmlPlugin = Object.keys(paths.entries).map((name) => {
         return new HtmlWebpackPlugin(
             Object.assign(
@@ -164,10 +166,7 @@ module.exports = function(webpackEnv) {
             )
         )
     })
-    console.log(entry);
-    console.log([isEnvDevelopment &&require.resolve('react-dev-utils/webpackHotDevClient'),paths.appIndexJs,].filter(Boolean))
-    console.log(paths.indexJsList);
-    //process.exit(1);
+
   return {
     mode: isEnvProduction ? 'production' : isEnvDevelopment && 'development',
     // Stop compilation early in production

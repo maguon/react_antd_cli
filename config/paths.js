@@ -60,7 +60,8 @@ const getEntries = (globPath) =>{
     return entries;
 }
 
-const entries = getEntries('src/**/index.js');
+const entries = getEntries('src/**/index.jsx');
+console.log(entries);
 
 const getIndexJs = () => {
     const indexJsList = [];
@@ -74,6 +75,7 @@ const getIndexJs = () => {
     return indexJsList;
 }
 const indexJsList = getIndexJs()
+console.log(indexJsList);
 
 // config after eject: we're in ./config/
 module.exports = {
