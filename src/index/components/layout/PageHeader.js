@@ -1,10 +1,16 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Badge,Button,Layout,Menu} from 'antd';
+import {AppBar,Badge,IconButton,Toolbar,Typography} from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import {Menu,Notifications,ExitToApp} from '@material-ui/icons';
 
-import { DownloadOutlined } from '@ant-design/icons';
 
-const {Header} = Layout;
+const styles = theme => ({
+    rowFlex :{
+        flexGrow: 1
+    }
+
+});
 
 class PageHeader extends React.Component {
 
@@ -21,17 +27,31 @@ class PageHeader extends React.Component {
 
     render() {
         //
-        const {pageHeaderReducer} = this.props;
+        const {classes,menuClick,pageHeaderReducer} = this.props;
         return (
-            <Header className="site-layout-theme App-header">
-                <div className="logo">
+            <AppBar position="absolute">
+                <Toolbar >
+                    <IconButton
+                        edge="start"
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={menuClick}
+                    >
+                        <Menu />
+                    </IconButton>
+
                     <img src="/logo144.png" style={{width:"48px"}}/>
-                    <span style={{marginLeft:30,fontWeight: "bold",fontSize: "20px",color:"white"}}>司机之家管理系统</span>
-                </div>
-                <Badge dot={true}>
-                    <DownloadOutlined style={{color:"#ffffff"}} size={"large"}/>
-                </Badge>
-            </Header>
+                    <Typography component="h1" className={classes.rowFlex} variant="h6" color="inherit" noWrap >司机之家管理系统 </Typography>
+                    <IconButton color="inherit">
+                        <Badge badgeContent={4} color="secondary">
+                            <Notifications />
+                        </Badge>
+                    </IconButton>
+                    <IconButton color="inherit">
+                        <ExitToApp />
+                    </IconButton>
+                </Toolbar>
+            </AppBar>
 
         )
     }
@@ -47,4 +67,4 @@ const mapDispatchToProps = (dispatch) => ({
 
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PageHeader)
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(PageHeader))

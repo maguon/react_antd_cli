@@ -1,59 +1,115 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {HashRouter as Router, Route, Link, NavLink} from "react-router-dom";
-import { Menu } from 'antd';
-import { MailOutlined, AppstoreOutlined, SettingOutlined, DashboardOutlined} from '@ant-design/icons';
-import {MainPanel,SystemSetting} from '../../components'
-const { SubMenu } = Menu;
-const routes = [
-    {
-        path: "/",
-        exact: true,
-        component: MainPanel
+import {NavLink} from "react-router-dom";
+
+
+import {Collapse,Divider,Drawer,IconButton,List,ListItem,ListItemText,ListItemIcon} from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import {ChevronLeft,ExpandLess,ExpandMore} from '@material-ui/icons';
+
+const styles = theme => ({
+    menuItem :{
+        paddingLeft:"20px"
     },
-    {
-        path: "/system_setting",
-        exact: true,
-        component: SystemSetting
+    toggleIcon:{
+        display: "flex",
+        padding: "0 8px",
+        minHeight: "56px",
+        alignItems: "center",
+        justifyContent: "flex-end",
+        minWidth:"220px"
     }
-];
+
+});
+
 class PageMenu extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {openArray: []};
+    }
+    componentDidMount (props){
+        const {menuList} =this.props;
+        let openArrayTemp = []
+        menuList.map(function (menuItem,index) {
+            openArrayTemp[index]= false;
+        })
+        this.setState({openArray:openArrayTemp});
     }
 
     render() {
-        let menuItem = [
-            {
-                "label": '主控面板',
-                "icon": <DashboardOutlined />,
-                "link": '/',
-                "children": []
-            },
-            {
-                "label": '系统设置',
-                "icon": <SettingOutlined />,
-                "children": [
-                    {
-                        "link": '/system_setting',
-                        "name": '城市'
-                    }
-                ]
-            }
-        ];
+        const {classes,menuList,open,onClose,pageHeaderReducer} =this.props;
+
+        let self = this;
+        const handleClick = (i) => {
+            let openArrayTemp =[]
+            menuList.map(function (menuItem,index) {
+                if(i==index){
+                    openArrayTemp[index]= !self.state.openArray[i];
+                }else{
+                    openArrayTemp[index]= false;
+                }
+
+            })
+            this.setState({openArray:openArrayTemp});
+        }
         return(
 
-            <Router hashType={"hashbang"}>
-                <Menu className="site-layout-theme" mode="inline">
-                    <Menu.Item key="sub1" icon={ <DashboardOutlined />}>
-                        <Link to="/">主控面板</Link>
-                    </Menu.Item>
+            <Drawer open={open} anchor={'left'} onClose={onClose} >
+                <div  className={classes.toggleIcon} >
+                    <IconButton onClick={onClose}>
+                        <ChevronLeft />
+                    </IconButton>
+                </div>
+                <Divider />
+                <List >
+                    {menuList.map(function (menuItem,index) {
+                        return(
+                            <div key={index}>
+                                {menuItem.children.length===0 &&
+                                <NavLink  exact className="MuiTypography-colorInherit " style={{hoverValue:"#000"}} to={menuItem.link}>
+                                    <ListItem button onClick={onClose} >
+                                        <ListItemIcon>{menuItem.icon}</ListItemIcon>
+                                        <ListItemText primary={menuItem.label} />
+                                    </ListItem>
+                                </NavLink>
+                                }
+                                {menuItem.children.length>0 &&
+                                <div>
+                                    <ListItem button onClick={() => handleClick(index)}>
+                                        <ListItemIcon>{menuItem.icon}</ListItemIcon>
+                                        <ListItemText primary={menuItem.label} />
+                                        {self.state.openArray[index] ? <ExpandLess /> : <ExpandMore />}
+                                    </ListItem>
+                                    <Collapse in={self.state.openArray[index]} timeout="auto">
+                                        <List component="div" className={classes.menuItem}>
+                                            {menuItem.children.map(function (subMenuItem,subIndex) {
+                                                return (
+                                                    <NavLink key={subIndex} exact  to={subMenuItem.link} className="MuiTypography-colorInherit ">
+                                                        <ListItem button onClick={onClose}>
 
-                    <SubMenu key="sub4" icon={<SettingOutlined />} title="设置">
-                        <Menu.Item key="9"><Link to="/system_setting">系统设置</Link></Menu.Item>
-                    </SubMenu>
-                </Menu>
-            </Router>
+                                                            <ListItemIcon>
+                                                                {subMenuItem.icon}
+                                                            </ListItemIcon>
+                                                            <ListItemText primary={subMenuItem.name} />
+
+                                                        </ListItem>
+                                                    </NavLink>
+                                                )
+                                            })}
+
+                                        </List>
+                                    </Collapse>
+                                </div>
+                                }
+
+
+                            </div>
+
+                        )
+                    })}
+
+                </List>
+            </Drawer>
         )
     }
 
@@ -61,7 +117,7 @@ class PageMenu extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-
+        pageHeaderReducer: state.PageHeaderReducer
     }
 };
 
@@ -69,4 +125,4 @@ const mapDispatchToProps = (dispatch) => ({
 
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PageMenu)
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(PageMenu))

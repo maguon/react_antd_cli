@@ -44,6 +44,13 @@
     background-repeat: no-repeat;
     background-position: center;
 }
+.Reset-bg-image {
+    background-size: cover;
+    background-color: #fafafa;
+    background-image: url(/reset_bg.jpeg);
+    background-repeat: no-repeat;
+    background-position: center;
+}
 
 .login-paper {
     margin: 64px 32px;

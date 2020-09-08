@@ -22,6 +22,14 @@
   color: #61dafb;
 }
 
+.Drawer-root {
+  width: 100%;
+  max-width: 360px;
+}
+a:hover {
+
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

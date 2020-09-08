@@ -1,12 +1,12 @@
 import React from 'react';
-import { Layout,Menu } from 'antd';
-import './App.css';
-import {PageHeader,PageFooter ,PageContent,PageMenu,MainPanel,SystemSetting} from  './components';
-import {HashRouter as Router, Route, Link, NavLink} from "react-router-dom";
-import { MailOutlined, AppstoreOutlined, SettingOutlined, DashboardOutlined} from '@ant-design/icons';
-const { SubMenu } = Menu;
-const {  Content,Sider } = Layout;
+import {connect} from 'react-redux';
+import {PageHeader ,PageContent,PageMenu,MainPanel,SystemSetting} from  './components';
+import {HashRouter as Router} from "react-router-dom";
 
+import {CssBaseline} from '@material-ui/core';
+import {Settings,SettingsSystemDaydream,Speed} from '@material-ui/icons';
+
+import './App.css';
 
 const routes = [
     {
@@ -20,61 +20,85 @@ const routes = [
         component: SystemSetting
     }
 ];
+
+
+const menuList = [
+    {
+        "label": '主控面板',
+        "icon": <Speed/>,
+        "link": '/',
+        "children": []
+    },
+    {
+        "label": '设置',
+        "icon": <Settings/>,
+        "link": '/',
+        "children": [
+            {
+                "link": '/system_setting',
+                "name": '系统设置' ,
+                "icon": <SettingsSystemDaydream/>
+            }
+        ]
+    },
+    {
+        "label": '设置',
+        "icon": <Settings/>,
+        "link": '/',
+        "children": [
+            {
+                "link": '/system_setting',
+                "name": '系统设置',
+                "icon": <SettingsSystemDaydream/>
+            }
+        ]
+    }
+];
 class App extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {drawerOpen:true};
     }
 
     componentDidMount() {
 
     }
+
+
     render() {
-        const {} = this.props;
+
+        const handleDrawerClose = () => {
+            this.setState({drawerOpen:false});
+        }
+        const handleDrawerOpen = () => {
+            this.setState({drawerOpen:true});
+        }
+
+
         return (
-            <Layout>
-                <PageHeader/>
-                <Layout style={{ minHeight: '100vh' }}>
-                    <Router hashType={"hashbang"}>
-                        <Sider theme="light" collapsible className="site-layout-theme" >
+            <Router hashType={"hashbang"}>
+            <div>
+                <CssBaseline />
+                <PageHeader menuClick={handleDrawerOpen}/>
+                <PageMenu menuList={menuList} open={this.state.drawerOpen} onClose={handleDrawerClose}/>
+                <PageContent routes={routes}/>
 
-
-                                <Menu className="site-layout-theme" mode="inline">
-                                    <Menu.Item key="sub1" icon={ <DashboardOutlined />}>
-                                        <Link to="/">主控面板</Link>
-                                    </Menu.Item>
-
-                                    <SubMenu key="sub4" icon={<SettingOutlined />} title="设置">
-                                        <Menu.Item key="9"><Link to="/system_setting">系统设置</Link></Menu.Item>
-                                    </SubMenu>
-                                </Menu>
-                            <div >
-                                <div style={{position: "relative",height:"20px"}}>
-
-                                </div>
-                            </div>
-                        </Sider>
-                        <Content style={{ margin: '0 16px' }}>
-                            {routes.map((route, index) => (
-                                // Render more <Route>s with the same paths as above, but different components this time.
-                                <Route
-                                    key={index}
-                                    path={route.path}
-                                    exact={route.exact}
-                                    component={route.component}
-                                />
-                            ))}
-                        </Content>
-                    </Router>
-                    <Layout className="site-layout">
-                        <PageFooter/>
-                    </Layout>
-                </Layout>
-
-            </Layout>
+            </div>
+            </Router>
         )
 
     }
 }
 
 
-export default App;
+const mapStateToProps = (state) => {
+    return {
+        pageHeaderReducer: state.PageHeaderReducer
+    }
+};
+
+const mapDispatchToProps = (dispatch) => ({
+
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
