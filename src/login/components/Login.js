@@ -8,8 +8,8 @@ import {Link as RouterLink} from "react-router-dom";
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import '../App.css'
-
 import {LoginActionTypes} from "../types";
+const loginAction = require('../actions/LoginAction');
 
 class Login extends React.Component {
     constructor(props) {
@@ -21,7 +21,7 @@ class Login extends React.Component {
     }
     render() {
 
-        const {loginReducer,setUserName,setPassword} = this.props;
+        const {loginReducer,login,setUserName,setPassword} = this.props;
         return (
             <Grid container component="main" style={{height:"100vh"}}>
                 <CssBaseline />
@@ -63,21 +63,20 @@ class Login extends React.Component {
                             />
 
                             <Button
-                                type="submit"
                                 fullWidth
                                 variant="contained"
                                 color="primary"
                                 style={{margin:"25px 0"}}
+                                onClick={login}
                             >
                                 登录
                             </Button>
                             <Grid container>
                                 <Grid item xs>
-                                    <Link>
+
                                         <RouterLink to='/reset'>
-                                        忘记密码
+                                            忘记密码
                                         </RouterLink>
-                                    </Link>
                                 </Grid>
                                 <Grid item>
 
@@ -108,6 +107,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+    login: (values) => {
+        dispatch(loginAction.login(values));
+    },
     setUserName : (e) => {
         dispatch(LoginActionTypes.setUserName(e.target.value));
     },
