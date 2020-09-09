@@ -66,7 +66,7 @@ class PageMenu extends React.Component {
                         return(
                             <div key={index}>
                                 {menuItem.children.length===0 &&
-                                <NavLink  exact className="MuiTypography-colorInherit " style={{hoverValue:"#000"}} to={menuItem.link}>
+                                <NavLink  exact className="MuiTypography-colorInherit " style={{textDecoration: "none"}} to={menuItem.link}>
                                     <ListItem button onClick={onClose} >
                                         <ListItemIcon>{menuItem.icon}</ListItemIcon>
                                         <ListItemText primary={menuItem.label} />
@@ -84,7 +84,7 @@ class PageMenu extends React.Component {
                                         <List component="div" className={classes.menuItem}>
                                             {menuItem.children.map(function (subMenuItem,subIndex) {
                                                 return (
-                                                    <NavLink key={subIndex} exact  to={subMenuItem.link} className="MuiTypography-colorInherit ">
+                                                    <NavLink key={subIndex} exact  to={subMenuItem.link} className="MuiTypography-colorInherit " style={{textDecoration: "none"}} >
                                                         <ListItem button onClick={onClose}>
 
                                                             <ListItemIcon>

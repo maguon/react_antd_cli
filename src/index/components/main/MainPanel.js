@@ -1,6 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
+import {Typography} from '@material-ui/core';
+
 class MainPanel extends React.Component {
     constructor(props) {
         super(props);
@@ -15,7 +17,9 @@ class MainPanel extends React.Component {
         const {} = this.props;
         return (
             <div>
-                Main Panel
+                <Typography component="div" >
+                    Main Panel
+                </Typography>
             </div>
         )
     }

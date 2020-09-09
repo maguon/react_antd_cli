@@ -2,6 +2,9 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import {Route} from "react-router-dom";
+import Container from '@material-ui/core/Container';
+
+
 
 class PageContent extends React.Component {
     constructor(props) {
@@ -16,8 +19,9 @@ class PageContent extends React.Component {
         //
         const {routes} = this.props;
         return (
-            <main>
+            <Container xs={12}>
                 <div style={{minHeight: "64px"}}></div>
+
                 {routes.map((route, index) => (
                     // Render more <Route>s with the same paths as above, but different components this time.
                     <Route
@@ -27,7 +31,8 @@ class PageContent extends React.Component {
                         component={route.component}
                     />
                 ))}
-            </main>
+
+            </Container>
         )
     }
 }
